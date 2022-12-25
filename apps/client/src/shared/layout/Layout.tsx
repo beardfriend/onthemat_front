@@ -7,7 +7,7 @@ function Layout({ children, mode }) {
   // const color = useColorModeValue("white", "gray.800");
   return (
     <Container w="100%" maxW="100%" m="0" p="0">
-      <Header />
+      <Header mode={mode} />
       <Button size="md" onClick={toggleColorMode} pos="fixed" bottom="10" right="10" borderRadius="2rem">
         {colorMode}
       </Button>

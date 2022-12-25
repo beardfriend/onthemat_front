@@ -1,24 +1,43 @@
 import { Box, Button, Container, Flex, Image, Input, InputGroup, InputRightElement, Text } from "@chakra-ui/react";
-
+import { emailRegex, passwordRegex } from "../../../utils/regex";
 import Google from "@Assets/social/google.png";
 import KaKao from "@Assets/social/kakao.png";
 import Naver from "@Assets/social/naver.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import EmailBox from "../components/EmailBox";
 
 function Login() {
   const [isShowPassword, setIsShowPassword] = useState(false);
+  const [isUsableEmail, setIsUsableEmail] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isUsablePassword, setIsUsablePassword] = useState(false);
 
+  function handleEmailChange(e) {
+    setEmail(e.target.value);
+    if (emailRegex.test(e.target.value)) {
+      setIsUsableEmail(true);
+    } else {
+      setIsUsableEmail(false);
+    }
+  }
+
+  function handlePasswordChange(e) {
+    setPassword(e.target.value);
+    if (passwordRegex.test(e.target.value)) {
+      setIsUsablePassword(true);
+    } else {
+      setIsUsablePassword(false);
+    }
+  }
+  useEffect(() => {
+    console.log(email);
+    console.log(isUsableEmail, isUsablePassword);
+  }, [email, password]);
   return (
     <Container>
       <Container>
-        <Box>
-          <Text mb="8px" fontSize="xs" as="b">
-            이메일
-          </Text>
-          <InputGroup size="md">
-            <Input placeholder="이메일을 입력해주세요" fontSize="xs" focusBorderColor="green.600" />
-          </InputGroup>
-        </Box>
+        <EmailBox value={email} onChange={(e) => handleEmailChange(e)} />
 
         <Box mt="1rem">
           <Text mb="8px" fontSize="xs" as="b">
@@ -26,6 +45,8 @@ function Login() {
           </Text>
           <InputGroup size="md">
             <Input
+              onChange={(e) => handlePasswordChange(e)}
+              value={password}
               placeholder="비밀번호를 입력해주세요"
               type={isShowPassword ? "text" : "password"}
               fontSize="xs"
@@ -39,7 +60,7 @@ function Login() {
           </InputGroup>
         </Box>
 
-        <Button mt="1.5rem" colorScheme="green" variant="solid" w="100%" disabled>
+        <Button mt="1.5rem" colorScheme="green" variant="solid" w="100%" disabled={!isUsableEmail || !isUsablePassword}>
           로그인
         </Button>
       </Container>

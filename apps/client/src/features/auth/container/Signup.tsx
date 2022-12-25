@@ -11,14 +11,52 @@ import {
   Image,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import { emailRegex, passwordRegex, nicknameRegex } from "../../../utils/regex";
 import { Link } from "react-router-dom";
 import Google from "@Assets/social/google.png";
 import Naver from "@Assets/social/naver.png";
 import KaKao from "@Assets/social/kakao.png";
+import { CheckIcon } from "@chakra-ui/icons";
+import { useEffect } from "react";
 
 function Signup() {
   const [isShowPassword, setIsShowPassword] = useState(false);
   const [isShowPasswordRepeat, setIsShowPasswordRepeat] = useState(false);
+  const [email, setEmail] = useState("");
+  const [nickname, setNickname] = useState("");
+  const [password, setPassword] = useState("");
+  const [rePassword, setRePassword] = useState("");
+  const [isUsablePassword, setIsUsablePassword] = useState("");
+  const [isUsableEmail, setIsUsableEmail] = useState(false);
+  const [isNotExistEmail, setIsNotExistEmail] = useState(false);
+  const [isUsableNickname, setIsUsableNickname] = useState(false);
+  const [isAgree, setIsAgree] = useState(false);
+
+  function handleEmailChange(e) {
+    setEmail(e.target.value);
+    if (emailRegex.test(e.target.value)) {
+      setIsUsableEmail(true);
+    } else {
+      setIsUsableEmail(false);
+    }
+
+    if (isNotExistEmail) {
+      setIsNotExistEmail(false);
+    }
+  }
+
+  function handleNicknameChange(e) {
+    setNickname(e.target.value);
+    if (nicknameRegex.test(e.target.value)) {
+      setIsUsableNickname(true);
+    } else {
+      setIsUsableNickname(false);
+    }
+  }
+
+  function handleEmailAlreadyExisit() {
+    setIsNotExistEmail(true);
+  }
 
   return (
     <Container>
@@ -28,19 +66,37 @@ function Signup() {
             이메일
           </Text>
           <InputGroup size="md">
-            <Input placeholder="이메일을 입력해주세요" fontSize="xs" focusBorderColor="green.600" />
-            <InputRightElement width="4.5rem">
-              <Button h="1.75rem" fontSize="0.7rem" onClick={() => setIsShowPasswordRepeat(!isShowPasswordRepeat)}>
-                중복확인
-              </Button>
-            </InputRightElement>
+            <Input
+              placeholder="이메일을 입력해주세요"
+              fontSize="xs"
+              focusBorderColor="green.600"
+              value={email}
+              onChange={(e) => handleEmailChange(e)}
+              isRequired={true}
+            />
+            <Flex>
+              {isNotExistEmail && <InputRightElement children={<CheckIcon color="green.500" />} mr="4rem" />}
+              <InputRightElement width="4.5rem">
+                <Button h="1.75rem" fontSize="0.7rem" onClick={handleEmailAlreadyExisit} disabled={!isUsableEmail}>
+                  중복확인
+                </Button>
+              </InputRightElement>
+            </Flex>
           </InputGroup>
         </Box>
         <Box mt="1rem">
           <Text mb="8px" fontSize="xs" as="b">
             닉네임
           </Text>
-          <Input placeholder="닉네임을 입력해주세요" fontSize="xs" focusBorderColor="green.600" />
+          <InputGroup size="md">
+            <Input
+              placeholder="닉네임을 입력해주세요"
+              fontSize="xs"
+              focusBorderColor="green.600"
+              onChange={(e) => handleNicknameChange(e)}
+            />
+            {isUsableNickname && <InputRightElement children={<CheckIcon color="green.500" />} />}
+          </InputGroup>
         </Box>
         <Box mt="1rem">
           <Text mb="8px" fontSize="xs" as="b">

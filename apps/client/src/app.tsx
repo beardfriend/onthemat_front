@@ -34,11 +34,9 @@ function App() {
       <ColorModeScript initialColorMode={resetTheme.config.initialColorMode} />
       <ChakraProvider theme={resetTheme}>
         <EmotionThemeProvider theme={theme}>
-          <Layout>
-            <Routes>
-              <Route path="/account/:mode" element={<Account />} />
-            </Routes>
-          </Layout>
+          <Routes>
+            <Route path="/account/:mode" element={<Account />} />
+          </Routes>
         </EmotionThemeProvider>
       </ChakraProvider>
     </>
