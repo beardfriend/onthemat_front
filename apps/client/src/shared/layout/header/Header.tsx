@@ -28,6 +28,7 @@ function Header({ logoUrl, loginType, mode }) {
       position="fixed"
       top="0"
       borderBottom={mode !== "auth" ? border : "none"}
+      zIndex="999"
     >
       <Flex justify="space-between" marginX="auto" maxW="xl" height="100%" alignItems="center">
         <Box>
