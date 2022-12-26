@@ -26,7 +26,7 @@ function Account() {
     }
   }, [mode]);
 
-  if (user) {
+  if (user.id !== 0) {
     return <Navigate to="/" />;
   }
 

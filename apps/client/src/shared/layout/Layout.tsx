@@ -4,7 +4,7 @@ import onthemat from "@Shared/api/onthemat";
 import Cookies from "js-cookie";
 import { useEffect } from "react";
 import { useQuery } from "react-query";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useResetRecoilState } from "recoil";
 
 import Header from "./header/Header";
 
@@ -15,14 +15,22 @@ interface ILayout {
 
 function Layout({ children, mode }: ILayout) {
   const token = Cookies.get("accessToken");
-  const { data, isSuccess } = useQuery("me", () => onthemat.GetMe(token).then((res) => res.data));
-  const [_, setUser] = useRecoilState(userState);
+  const { data, isSuccess, isError } = useQuery("me", () => onthemat.GetMe(token).then((res) => res.data), {
+    retry: 0,
+  });
+  const [user, setUser] = useRecoilState(userState);
+  const reset = useResetRecoilState(userState);
 
   useEffect(() => {
+    console.log(data, isSuccess, isError);
     if (isSuccess) {
       setUser(data.result);
     }
-  }, [isSuccess]);
+    if (isError) {
+      console.log("s2");
+      reset();
+    }
+  }, [isSuccess, isError]);
 
   return (
     <Container w="100%" maxW="100%" m="0" p="0">
