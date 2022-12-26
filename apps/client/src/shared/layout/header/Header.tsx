@@ -16,12 +16,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 function Header({ logoUrl, loginType, mode }) {
-  const color = useColorModeValue("gray.700", "white");
-  const bg = useColorModeValue("white", "gray.700");
   const border = useColorModeValue("1px solid #E2E8F0", "none");
   return (
     <Container
-      bg={mode === "auth" ? "#1C241A" : bg}
+      bg={"#1C241A"}
       w="100%"
       maxW="100%"
       height={{ base: "3.5rem", md: "4rem" }}
@@ -32,7 +30,7 @@ function Header({ logoUrl, loginType, mode }) {
     >
       <Flex justify="space-between" marginX="auto" maxW="xl" height="100%" alignItems="center">
         <Box>
-          <Text color={mode === "auth" ? "white" : color} fontSize={{ base: "lg", md: "xl" }} as="b">
+          <Text color={"white"} fontSize={{ base: "lg", md: "xl" }} as="b">
             <Link to="/">OnTheMat</Link>
           </Text>
         </Box>
@@ -63,10 +61,10 @@ function Header({ logoUrl, loginType, mode }) {
             ) : (
               <Flex w={{ base: "6rem", lg: "8rem" }} justify="space-between">
                 <Text color="white" fontSize={{ base: "xs", lg: "sm" }}>
-                  로그인
+                  <Link to="/account/login">로그인</Link>
                 </Text>
                 <Text color="white" fontSize={{ base: "xs", lg: "sm" }}>
-                  회원가입
+                  <Link to="/account/signup">회원가입</Link>
                 </Text>
               </Flex>
             )}
@@ -81,6 +79,6 @@ export default Header;
 
 Header.defaultProps = {
   logoUrl: "https://bit.ly/dan-abramov",
-  loginType: "teacher", // non / teacher / academy
+  loginType: "teacher", // non / teacher / academy / user
   mode: "d",
 };

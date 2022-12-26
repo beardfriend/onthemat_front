@@ -2,10 +2,14 @@ import { ChakraProvider, ColorModeScript, extendTheme } from "@chakra-ui/react";
 
 import { ThemeProvider as EmotionThemeProvider } from "@emotion/react";
 import Account from "@Features/auth/page/Account";
+import Main from "@Features/main/page/Main";
 import theme from "@Shared/theme/theme";
-import { useEffect, useState } from "react";
 
-import { Route, Routes, useParams, useLocation } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
+import { RecoilRoot } from "recoil";
+import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+
+const queryClient = new QueryClient();
 
 function App() {
   let location = useLocation();
@@ -37,14 +41,18 @@ function App() {
   return (
     <>
       <ColorModeScript initialColorMode={resetTheme.config.initialColorMode} />
-      <ChakraProvider theme={resetTheme}>
-        <EmotionThemeProvider theme={theme}>
-          <Routes>
-            <Route path="/account/:mode" element={<Account />} />
-            <Route path="/account/:mode" element={<Account />} />
-          </Routes>
-        </EmotionThemeProvider>
-      </ChakraProvider>
+      <QueryClientProvider client={queryClient}>
+        <RecoilRoot>
+          <ChakraProvider theme={resetTheme}>
+            <EmotionThemeProvider theme={theme}>
+              <Routes>
+                <Route path="/account/:mode" element={<Account />} />
+                <Route path="/" element={<Main />} />
+              </Routes>
+            </EmotionThemeProvider>
+          </ChakraProvider>
+        </RecoilRoot>
+      </QueryClientProvider>
     </>
   );
 }

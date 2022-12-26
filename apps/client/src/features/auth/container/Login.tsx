@@ -19,7 +19,9 @@ import OnthematAPI from "@Shared/api/onthemat";
 import { AxiosError } from "axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 import { emailRegex, passwordRegex } from "../../../utils/regex";
+import moment from "moment";
 
 function Login() {
   const [isShowPassword, setIsShowPassword] = useState(false);
@@ -61,6 +63,13 @@ function Login() {
       const res = await OnthematAPI.Login({ email, password });
       if (res.status === 200) {
         inputReset();
+
+        Cookies.set("accessToken", res.data.result.accessToken, {
+          expires: 20000,
+        });
+        Cookies.set("refreshToken", res.data.result.refreshToken, {
+          expires: 20000,
+        });
         navigate("/");
       }
     } catch (err) {
