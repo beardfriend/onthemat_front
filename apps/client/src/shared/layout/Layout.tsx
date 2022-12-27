@@ -1,9 +1,10 @@
-import { Container } from "@chakra-ui/react";
+import { calc, Container } from "@chakra-ui/react";
 import { userState } from "@Features/user/states/user";
 import onthemat from "@Shared/api/onthemat";
 import Cookies from "js-cookie";
 import { useEffect } from "react";
 import { useQuery } from "react-query";
+import { Navigate } from "react-router-dom";
 import { useRecoilState, useResetRecoilState } from "recoil";
 
 import Header from "./header/Header";
@@ -22,12 +23,10 @@ function Layout({ children, mode }: ILayout) {
   const reset = useResetRecoilState(userState);
 
   useEffect(() => {
-    console.log(data, isSuccess, isError);
     if (isSuccess) {
       setUser(data.result);
     }
     if (isError) {
-      console.log("s2");
       reset();
     }
   }, [isSuccess, isError]);
@@ -42,7 +41,7 @@ function Layout({ children, mode }: ILayout) {
       <Container
         w={"100%"}
         maxW={mode === "auth" ? "100%" : "xl"}
-        minH="100vh"
+        minH={{ base: "calc(100vh - 3.5rem)", md: "calc(100vh - 4rem)" }}
         mt={{ base: "3.5rem", md: "4rem" }}
         p="0"
       >

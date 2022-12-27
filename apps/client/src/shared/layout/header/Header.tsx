@@ -10,13 +10,11 @@ import {
   MenuItem,
   MenuList,
   Text,
-  useColorModeValue,
 } from "@chakra-ui/react";
 import React from "react";
 import { Link } from "react-router-dom";
 
 function Header({ logoUrl, loginType, mode }) {
-  const border = useColorModeValue("1px solid #E2E8F0", "none");
   return (
     <Container
       bg={"#1C241A"}
@@ -25,7 +23,7 @@ function Header({ logoUrl, loginType, mode }) {
       height={{ base: "3.5rem", md: "4rem" }}
       position="fixed"
       top="0"
-      borderBottom={mode !== "auth" ? border : "none"}
+      border="none"
       zIndex="999"
     >
       <Flex justify="space-between" marginX="auto" maxW="xl" height="100%" alignItems="center">

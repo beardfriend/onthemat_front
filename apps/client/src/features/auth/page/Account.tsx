@@ -4,27 +4,21 @@ import DownCat from "@Assets/downcat.png";
 import Layout from "@Shared/layout/Layout";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import Login from "../container/Login";
-import Signup from "../container/Signup";
 import ResetPassword from "../container/ResetPassword";
-import { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
+import Signup from "../container/Signup";
+
 import { userState } from "@Features/user/states/user";
+import { useRecoilState } from "recoil";
 
 function Account() {
   const navigate = useNavigate();
-  const [nowLocation, setNowLocation] = useState("login");
   let { mode } = useParams();
+
   const [user, _] = useRecoilState(userState);
 
   const handleNavigatePage = (e) => {
     navigate(`/account/${e.target.name}`);
   };
-
-  useEffect(() => {
-    if (mode !== undefined) {
-      setNowLocation(mode);
-    }
-  }, [mode]);
 
   if (user.id !== 0) {
     return <Navigate to="/" />;

@@ -16,9 +16,11 @@ class OnthematAPI {
       },
     });
   }
+
   Singup(data) {
     return this.axios().post(`/v1/auth/signup`, data);
   }
+
   Login(data) {
     return this.axios().post(`/v1/auth/login`, data);
   }
@@ -48,7 +50,6 @@ class OnthematAPI {
   }
 
   // User
-
   GetMe(token) {
     return this.axios().get(`/v1/user/me`, {
       headers: {
