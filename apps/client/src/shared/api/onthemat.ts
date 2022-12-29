@@ -25,6 +25,17 @@ class OnthematAPI {
     return this.axios().post(`/v1/auth/login`, data);
   }
 
+  Logout(refreshToken, userId) {
+    return this.axios().get(`/v1/auth/logout`, {
+      headers: {
+        Authorization: `Bearer ${refreshToken}`,
+      },
+      params: {
+        userId,
+      },
+    });
+  }
+
   SocialLogin(type) {
     return this.axios().get(`/v1/auth/${type}/url`, {
       headers: {
@@ -54,6 +65,16 @@ class OnthematAPI {
     return this.axios().get(`/v1/user/me`, {
       headers: {
         Authorization: `Bearer ${token}`,
+      },
+    });
+  }
+
+  // Yoga
+
+  Recommendation(name) {
+    return this.axios().get(`v1/yoga/recommendation`, {
+      params: {
+        name,
       },
     });
   }

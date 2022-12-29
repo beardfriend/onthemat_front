@@ -17,11 +17,10 @@ import {
 } from "@chakra-ui/react";
 import OnthematAPI from "@Shared/api/onthemat";
 import { AxiosError } from "axios";
+import Cookies from "js-cookie";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
 import { emailRegex, passwordRegex } from "../../../utils/regex";
-import moment from "moment";
 
 function Login() {
   const [isShowPassword, setIsShowPassword] = useState(false);
@@ -95,6 +94,12 @@ function Login() {
     setIsLoading(false);
   }
 
+  function handleEnter(e) {
+    if (e.key === "Enter" && isUsableEmail && isUsablePassword) {
+      handleLogin();
+    }
+  }
+
   async function handleSocialLogin(type) {
     try {
       const res = await OnthematAPI.SocialLogin(type);
@@ -137,6 +142,7 @@ function Login() {
                 fontSize="xs"
                 autoComplete="on"
                 focusBorderColor="green.600"
+                onKeyDown={handleEnter}
               />
               <InputRightElement width="4.5rem">
                 <Button h="1.75rem" fontSize="0.7rem" onClick={() => setIsShowPassword(!isShowPassword)}>

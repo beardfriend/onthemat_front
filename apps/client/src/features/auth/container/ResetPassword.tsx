@@ -1,20 +1,9 @@
-import {
-  Container,
-  Text,
-  Box,
-  Flex,
-  FormControl,
-  FormLabel,
-  Input,
-  InputGroup,
-  Button,
-  useToast,
-} from "@chakra-ui/react";
+import { Button, Container, Flex, FormControl, FormLabel, Input, InputGroup, Text, useToast } from "@chakra-ui/react";
 import onthemat from "@Shared/api/onthemat";
 import { AxiosError } from "axios";
 
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { emailRegex } from "../../../utils/regex";
 
 function ResetPassword() {
