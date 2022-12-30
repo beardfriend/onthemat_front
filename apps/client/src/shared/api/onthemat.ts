@@ -60,12 +60,41 @@ class OnthematAPI {
     });
   }
 
+  // Upload
+  ImageUpload(purpose, file, token) {
+    const form = new FormData();
+    form.append("file", file);
+    return this.axios().post(`/v1/upload/${purpose}`, form, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  }
+
   // User
   GetMe(token) {
     return this.axios().get(`/v1/user/me`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
+    });
+  }
+
+  // Academy
+
+  CreateAcademy({ sigunguAdmCode, businessCode, name, callNumber, addressRoad, addressDetail, logoUrl }, yogaIds) {
+    return this.axios().post(`/v1/academy`, {
+      info: {
+        sigunguAdmCode: sigunguAdmCode,
+        businessCode: businessCode,
+        name: name,
+        callNumber: callNumber,
+        addressRoad: addressRoad,
+        addressDetail: addressDetail,
+        logoUrl: logoUrl,
+      },
+      yogaIds: yogaIds,
     });
   }
 

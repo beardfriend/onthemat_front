@@ -1,4 +1,5 @@
 import { CheckIcon } from "@chakra-ui/icons";
+import ImageUploading from "react-images-uploading";
 import {
   Box,
   Button,
@@ -22,13 +23,16 @@ import {
   Text,
   useDisclosure,
   useToast,
+  Image,
 } from "@chakra-ui/react";
 import onthemat from "@Shared/api/onthemat";
 import DaumPost from "@Shared/components/DaumPost";
 import Layout from "@Shared/layout/Layout";
-import React, { Fragment, useState } from "react";
+import Cookies from "js-cookie";
+import React, { Fragment, useEffect, useState } from "react";
 
 function Regist() {
+  const [image, setImage] = React.useState<any>([]);
   const [businessCode, setBusinessCode] = useState("");
   const [isUsableBusinessCode, setIsUsableBusinessCode] = useState(false);
   const [academyName, setAcademyName] = useState("");
@@ -38,7 +42,7 @@ function Regist() {
   const [addressRoad, setAddressRoad] = useState("");
   const [isUsableAddressRoad, setIsUsableAddressRoad] = useState(false);
   const [addressDetail, setAddressDetail] = useState("");
-  const [isUsableAddressDetail, setIsUsableAddressDetail] = useState(false);
+
   const [sigunguCode, setSigunguCode] = useState("");
   const [recommendationName, setRecommendationName] = useState("");
   const [recommendationData, setRecommendationData] = useState([]);
@@ -51,6 +55,13 @@ function Regist() {
 
   const initialRef = React.useRef(null);
 
+  const maxNumber = 10;
+  const onChange = async (imageList, addUpdateIndex) => {
+    const token = Cookies.get("accessToken");
+    const res = await onthemat.ImageUpload("logo", imageList[addUpdateIndex].file, token);
+    console.log(res);
+    setImage([imageList[addUpdateIndex]]);
+  };
   function onCompletePost(data) {
     let fullAddr = data.address;
     let extraAddr = "";
@@ -142,11 +153,6 @@ function Regist() {
 
   function handleDetailAddress(e) {
     setAddressDetail(e.target.value);
-    if (e.target.value.length < 2 || e.target.value.length > 20) {
-      setIsUsableAddressDetail(false);
-    } else {
-      setIsUsableAddressDetail(true);
-    }
   }
 
   async function handleRecommendation(e) {
@@ -176,6 +182,25 @@ function Regist() {
     onSearchClose();
   }
 
+  useEffect(() => {
+    if (selectedYoga.length > 0) {
+      setIsUseableYoga(true);
+    } else {
+      setIsUseableYoga(false);
+    }
+  }, [selectedYoga]);
+
+  // function handleAcademyCreate() {
+  //   onthemat.CreateAcademy({
+  //     sigunguAdmCode: sigunguCode,
+  //     businessCode: businessCode,
+  //     addressRoad: addressRoad,
+  //     addressDetail: addressDetail,
+  //     callNumber: callNumber,
+  //     name: academyName,
+  //   });
+  // }
+
   return (
     <Fragment>
       <Layout mode="default">
@@ -189,6 +214,43 @@ function Regist() {
                 🙏🏽
               </Text>
               <form>
+                <FormControl isRequired>
+                  <FormLabel mb="8px" fontSize="xs" as="b">
+                    로고
+                  </FormLabel>
+                  <ImageUploading value={image} onChange={onChange} maxNumber={maxNumber} dataURLKey="data_url">
+                    {({
+                      imageList,
+                      onImageUpload,
+                      onImageRemoveAll,
+                      onImageUpdate,
+                      onImageRemove,
+                      isDragging,
+                      dragProps,
+                    }) => (
+                      <>
+                        {image.length === 0 ? (
+                          <Image
+                            src="https://www.svgrepo.com/show/170952/add-button.svg"
+                            alt="Dan Abramov"
+                            boxSize="100px"
+                            onClick={onImageUpload}
+                            cursor="pointer"
+                          />
+                        ) : (
+                          <Image
+                            boxSize="100px"
+                            src={image[0]?.data_url}
+                            alt="Dan Abramov"
+                            onClick={onImageUpload}
+                            cursor="pointer"
+                          />
+                        )}
+                      </>
+                    )}
+                  </ImageUploading>
+                </FormControl>
+
                 <FormControl mt="1rem" isRequired>
                   <FormLabel mb="8px" fontSize="xs" as="b">
                     사업자 번호
@@ -315,8 +377,8 @@ function Regist() {
                         <CheckIcon
                           color="green.500"
                           transition="opacity ease-out 1s"
-                          opacity={isUsableAddressDetail ? 1 : 0}
-                          visibility={isUsableAddressDetail ? "visible" : "hidden"}
+                          opacity={addressDetail.length > 1 ? 1 : 0}
+                          visibility={addressDetail.length > 1 ? "visible" : "hidden"}
                         />
                       }
                     />
@@ -420,7 +482,20 @@ function Regist() {
                     </ModalContent>
                   </Modal>
                 </FormControl>
-                <Button mt="1.5rem" colorScheme="green" variant="solid" w="100%">
+                <Button
+                  mt="1.5rem"
+                  colorScheme="green"
+                  variant="solid"
+                  w="100%"
+                  isDisabled={
+                    !isUsableBusinessCode ||
+                    !isUsableAcademyName ||
+                    !isUsableCallNumber ||
+                    !isUsableAddressRoad ||
+                    !isUsableAddressRoad ||
+                    !isUsableYoga
+                  }
+                >
                   등록하기
                 </Button>
               </form>
