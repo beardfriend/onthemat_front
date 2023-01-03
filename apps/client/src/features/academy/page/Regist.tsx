@@ -26,6 +26,7 @@ import {
   Image,
 } from "@chakra-ui/react";
 import onthemat from "@Shared/api/onthemat";
+import { AxiosError } from "axios";
 import DaumPost from "@Shared/components/DaumPost";
 import Layout from "@Shared/layout/Layout";
 import Cookies from "js-cookie";
@@ -33,6 +34,7 @@ import React, { Fragment, useEffect, useState } from "react";
 
 function Regist() {
   const [image, setImage] = React.useState<any>([]);
+  const [imageUrl, setImageUrl] = useState("");
   const [businessCode, setBusinessCode] = useState("");
   const [isUsableBusinessCode, setIsUsableBusinessCode] = useState(false);
   const [academyName, setAcademyName] = useState("");
@@ -56,12 +58,16 @@ function Regist() {
   const initialRef = React.useRef(null);
 
   const maxNumber = 10;
+
   const onChange = async (imageList, addUpdateIndex) => {
     const token = Cookies.get("accessToken");
     const res = await onthemat.ImageUpload("logo", imageList[addUpdateIndex].file, token);
     console.log(res);
+
     setImage([imageList[addUpdateIndex]]);
+    setImageUrl(res.data.result);
   };
+
   function onCompletePost(data) {
     let fullAddr = data.address;
     let extraAddr = "";
@@ -190,16 +196,41 @@ function Regist() {
     }
   }, [selectedYoga]);
 
-  // function handleAcademyCreate() {
-  //   onthemat.CreateAcademy({
-  //     sigunguAdmCode: sigunguCode,
-  //     businessCode: businessCode,
-  //     addressRoad: addressRoad,
-  //     addressDetail: addressDetail,
-  //     callNumber: callNumber,
-  //     name: academyName,
-  //   });
-  // }
+  async function handleAcademyCreate() {
+    const token = Cookies.get("accessToken");
+    const ids: number[] = [];
+    selectedYoga.forEach((d: any) => {
+      ids.push(d.id);
+    });
+
+    try {
+      const res = await onthemat.CreateAcademy(
+        {
+          sigunguAdmCode: Number(sigunguCode),
+          businessCode: businessCode.replace(/-/g, ""),
+          addressRoad: addressRoad,
+          addressDetail: addressDetail,
+          callNumber: callNumber.replace(/-/g, ""),
+          name: academyName,
+          logoUrl: imageUrl,
+        },
+        ids,
+        token
+      );
+      if (res.status === 201) {
+        window.location.href = "http://localhost:3000";
+      }
+    } catch (err) {
+      const error = err as AxiosError;
+      const errorData = error.response?.data as { message: string; code: number; details: string };
+      toast({
+        status: "error",
+        title: errorData.message,
+        position: "top",
+        duration: 1500,
+      });
+    }
+  }
 
   return (
     <Fragment>
@@ -219,15 +250,7 @@ function Regist() {
                     로고
                   </FormLabel>
                   <ImageUploading value={image} onChange={onChange} maxNumber={maxNumber} dataURLKey="data_url">
-                    {({
-                      imageList,
-                      onImageUpload,
-                      onImageRemoveAll,
-                      onImageUpdate,
-                      onImageRemove,
-                      isDragging,
-                      dragProps,
-                    }) => (
+                    {({ onImageUpload }) => (
                       <>
                         {image.length === 0 ? (
                           <Image
@@ -349,7 +372,6 @@ function Regist() {
                       onClick={onOpen}
                       value={addressRoad}
                       focusBorderColor="green.600"
-                      onChange={(e) => handleCallNumberChange(e)}
                     />
                     <InputRightElement
                       children={
@@ -488,13 +510,9 @@ function Regist() {
                   variant="solid"
                   w="100%"
                   isDisabled={
-                    !isUsableBusinessCode ||
-                    !isUsableAcademyName ||
-                    !isUsableCallNumber ||
-                    !isUsableAddressRoad ||
-                    !isUsableAddressRoad ||
-                    !isUsableYoga
+                    !isUsableBusinessCode || !isUsableAcademyName || !isUsableCallNumber || !isUsableAddressRoad
                   }
+                  onClick={handleAcademyCreate}
                 >
                   등록하기
                 </Button>

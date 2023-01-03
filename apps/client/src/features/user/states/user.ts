@@ -7,6 +7,7 @@ export const userState = atom({
     email: null,
     nickname: "",
     type: null,
+    logo_url: "https://pbs.twimg.com/profile_images/1374979417915547648/vKspl9Et_400x400.jpg",
   }, // default value (aka initial value)
 });
 

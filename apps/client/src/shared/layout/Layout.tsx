@@ -15,11 +15,13 @@ interface ILayout {
 
 function Layout({ children, mode }: ILayout) {
   const token = Cookies.get("accessToken");
+  const [user, setUser] = useRecoilState(userState);
 
   const { data, isSuccess, isError } = useQuery("me", () => onthemat.GetMe(token).then((res) => res.data), {
-    retry: 0,
+    retry: false,
+    staleTime: Infinity,
+    enabled: !user.id,
   });
-  const [user, setUser] = useRecoilState(userState);
   const reset = useResetRecoilState(userState);
 
   async function handleLogout() {
@@ -50,7 +52,7 @@ function Layout({ children, mode }: ILayout) {
           mode={mode}
           handleLogout={handleLogout}
           loginType={!data?.result ? "non" : data?.result?.type !== null ? data?.result?.type : "user"}
-          logoUrl="https://pbs.twimg.com/profile_images/1374979417915547648/vKspl9Et_400x400.jpg"
+          logoUrl={user.logo_url}
         />
         <Container
           w={"100%"}

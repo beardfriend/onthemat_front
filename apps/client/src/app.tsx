@@ -2,6 +2,7 @@ import { ChakraProvider, ColorModeScript, extendTheme } from "@chakra-ui/react";
 import { ThemeProvider as EmotionThemeProvider } from "@emotion/react";
 
 import Account from "@Features/auth/page/Account";
+import AcademyInfo from "@Features/academy/page/Me";
 import Main from "@Features/home/page/Main";
 import theme from "@Shared/theme/theme";
 import SelectType from "@Features/user/page/SelectType";
@@ -11,7 +12,16 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import { RecoilRoot } from "recoil";
 import AcademyRegist from "@Features/academy/page/Regist";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      retry: false,
+      staleTime: Infinity,
+    },
+  },
+});
 
 function App() {
   let location = useLocation();
@@ -30,7 +40,8 @@ function App() {
           backgroundColor:
             location.pathname.includes("account") ||
             location.pathname.includes("academy/regist") ||
-            location.pathname.includes("user/type")
+            location.pathname.includes("user/type") ||
+            location.pathname.includes("/academy/me")
               ? "#1C241A"
               : "#ffffff",
         },
@@ -54,6 +65,7 @@ function App() {
             <EmotionThemeProvider theme={theme}>
               <Routes>
                 <Route path="/academy/regist" element={<AcademyRegist />} />
+                <Route path="/academy/me" element={<AcademyInfo />} />
                 <Route path="/user/type" element={<SelectType />} />
                 <Route path="/account/:mode" element={<Account />} />
                 <Route path="/" element={<Main />} />

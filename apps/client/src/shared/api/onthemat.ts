@@ -83,19 +83,67 @@ class OnthematAPI {
 
   // Academy
 
-  CreateAcademy({ sigunguAdmCode, businessCode, name, callNumber, addressRoad, addressDetail, logoUrl }, yogaIds) {
-    return this.axios().post(`/v1/academy`, {
-      info: {
-        sigunguAdmCode: sigunguAdmCode,
-        businessCode: businessCode,
-        name: name,
-        callNumber: callNumber,
-        addressRoad: addressRoad,
-        addressDetail: addressDetail,
-        logoUrl: logoUrl,
+  CreateAcademy(
+    { sigunguAdmCode, businessCode, name, callNumber, addressRoad, addressDetail, logoUrl },
+    yogaIds,
+    token
+  ) {
+    return this.axios().post(
+      `/v1/academy`,
+      {
+        info: {
+          sigunguAdmCode: sigunguAdmCode,
+          businessCode: businessCode,
+          name: name,
+          callNumber: callNumber,
+          addressRoad: addressRoad,
+          addressDetail: addressDetail,
+          logoUrl: logoUrl,
+        },
+        yogaIds: yogaIds,
       },
-      yogaIds: yogaIds,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  }
+
+  AcademyMe(token) {
+    return this.axios().get(`/v1/academy/me`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
+  }
+
+  UpdateAcademy(
+    { sigunguAdmCode, sigunguId, name, callNumber, addressRoad, addressDetail, logoUrl },
+    yogaIds,
+    token,
+    id
+  ) {
+    return this.axios().put(
+      `/v1/academy/${id}`,
+      {
+        info: {
+          sigunguAdmCode: sigunguAdmCode,
+          sigunguId: sigunguId,
+          name: name,
+          logoUrl: logoUrl,
+          callNumber: callNumber,
+          addressRoad: addressRoad,
+          addressDetail: addressDetail,
+        },
+        yogaIds: yogaIds,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
   }
 
   // Yoga
