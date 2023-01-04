@@ -12,7 +12,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { Fragment } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 function Header({ logoUrl, loginType, mode, handleLogout }) {
   return (
@@ -52,7 +52,9 @@ function Header({ logoUrl, loginType, mode, handleLogout }) {
                     </MenuGroup>
                     <MenuDivider />
                     <MenuGroup title="프로필" bg="blue.100" textAlign="center">
-                      <MenuItem>마이페이지</MenuItem>
+                      <NavLink to="/user/me">
+                        <MenuItem>마이페이지</MenuItem>
+                      </NavLink>
                       <MenuItem onClick={handleLogout}>로그아웃</MenuItem>
                     </MenuGroup>
                   </MenuList>

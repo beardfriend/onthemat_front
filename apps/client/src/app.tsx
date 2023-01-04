@@ -6,7 +6,7 @@ import AcademyInfo from "@Features/academy/page/Me";
 import Main from "@Features/home/page/Main";
 import theme from "@Shared/theme/theme";
 import SelectType from "@Features/user/page/SelectType";
-
+import UserMe from "@Features/user/page/Me";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { RecoilRoot } from "recoil";
@@ -67,6 +67,7 @@ function App() {
                 <Route path="/academy/regist" element={<AcademyRegist />} />
                 <Route path="/academy/me" element={<AcademyInfo />} />
                 <Route path="/user/type" element={<SelectType />} />
+                <Route path="/user/me" element={<UserMe />} />
                 <Route path="/account/:mode" element={<Account />} />
                 <Route path="/" element={<Main />} />
               </Routes>

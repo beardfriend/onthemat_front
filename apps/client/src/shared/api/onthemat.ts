@@ -81,6 +81,21 @@ class OnthematAPI {
     });
   }
 
+  UpdateMe({ nickname, phoneNum }, token, id) {
+    return this.axios().put(
+      `/v1/user/${id}`,
+      {
+        nickname,
+        phone_num: phoneNum,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  }
+
   // Academy
 
   CreateAcademy(
