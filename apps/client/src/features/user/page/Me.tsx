@@ -13,7 +13,7 @@ function Me() {
     <Fragment>
       <Layout mode="default">
         <Flex direction="column" justify="center" alignItems="center" w="100%" pb="4rem">
-          <Flex bg="#f5f5f5" w="100%" h="6rem" p="0" m="0" align="center" justify="center">
+          <Flex bg="#f5f5f5" w="100%" minW="100%" h="6rem" p="0" m="0" align="center" justify="center">
             <Text fontSize="lg" fontWeight="extrabold">
               마이 페이지
             </Text>

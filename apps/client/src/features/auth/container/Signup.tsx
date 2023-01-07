@@ -62,6 +62,16 @@ function Signup() {
     setIsUsablePassword(false);
   }
 
+  async function handleSocialSignup(type) {
+    try {
+      const res = await OnthematAPI.SocialLogin(type);
+      window.location.replace(res.data.result);
+      console.log(res);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   async function handleSignUp() {
     setIsLoading(true);
     try {
@@ -306,15 +316,15 @@ function Signup() {
             </Text>
           </Box>
           <Flex justify="space-around">
-            <Flex direction="column" alignItems="center">
+            <Flex direction="column" alignItems="center" onClick={() => handleSocialSignup("kakao")}>
               <Image src={KaKao} h="3rem" />
               <Text fontSize="xs">Kakao</Text>
             </Flex>
-            <Flex direction="column" alignItems="center">
+            <Flex direction="column" alignItems="center" onClick={() => handleSocialSignup("google")}>
               <Image src={Google} h="3rem" />
               <Text fontSize="xs">Google</Text>
             </Flex>
-            <Flex direction="column" alignItems="center">
+            <Flex direction="column" alignItems="center" onClick={() => handleSocialSignup("naver")}>
               <Image src={Naver} h="3rem" />
               <Text fontSize="xs">Naver</Text>
             </Flex>

@@ -14,7 +14,7 @@ import {
 import { Fragment } from "react";
 import { Link, NavLink } from "react-router-dom";
 
-function Header({ logoUrl, loginType, mode, handleLogout }) {
+function Header({ logoUrl, loginType, mode, handleLogout, name }) {
   return (
     <Fragment>
       <Container
@@ -44,7 +44,7 @@ function Header({ logoUrl, loginType, mode, handleLogout }) {
               {loginType !== "non" ? (
                 <Menu>
                   <MenuButton>
-                    <Avatar name="Dan Abrahmov" src={logoUrl} size={{ base: "sm", md: "md" }} />
+                    <Avatar name={name} src={logoUrl} size={{ base: "sm", md: "md" }} />
                   </MenuButton>
                   <MenuList mt="0.2rem">
                     <MenuGroup title="채용" bg="blue.100" textAlign="center">

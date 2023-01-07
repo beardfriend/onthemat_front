@@ -49,6 +49,7 @@ function Layout({ children, mode }: ILayout) {
     <Fragment>
       <Container w="100%" maxW="100%" m="0" p="0">
         <Header
+          name={user.nickname}
           mode={mode}
           handleLogout={handleLogout}
           loginType={!data?.result ? "non" : data?.result?.type !== null ? data?.result?.type : "user"}
@@ -56,7 +57,7 @@ function Layout({ children, mode }: ILayout) {
         />
         <Container
           w={"100%"}
-          maxW={mode === "auth" ? "100%" : "xl"}
+          maxW="100%"
           minH={{ base: "calc(100vh - 3.5rem)", md: "calc(100vh - 4rem)" }}
           mt={{ base: "3.5rem", md: "4rem" }}
           p="0"
